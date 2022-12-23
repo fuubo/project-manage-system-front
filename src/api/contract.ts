@@ -10,7 +10,7 @@ interface RequestData {
 export function currentList() {
   return request({
     baseURL: base,
-    url: '/hr-contract-web/employee/signed/latest',
+    url: '/hr-contract-web/employee/mobile/signed/latest',
     method: 'post'
   });
 }
@@ -18,7 +18,7 @@ export function currentList() {
 export function fileList(contractNo: string) {
   return request({
     baseURL: base,
-    url: '/hr-contract-web/employee/signed/files',
+    url: '/hr-contract-web/employee/mobile/signed/files',
     method: 'post',
     data: {contractNo}
   });
@@ -27,7 +27,7 @@ export function fileList(contractNo: string) {
 export function contractList(data: RequestData) {
   return request({
     baseURL: base,
-    url: '/hr-contract-web/employee/signed/list',
+    url: '/hr-contract-web/employee/mobile/signed/list',
     method: 'post',
     data
   });

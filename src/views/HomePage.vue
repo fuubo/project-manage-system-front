@@ -20,7 +20,7 @@ var logout = () => {
 <template>
   <div class="user">
     <div class="user-avatar">
-        <img :src="`https://adpassport.xdf.cn/A2apis/GetUserPhoto?AccountID=${user.employEmail}`" class="avatar-image"/>
+        <img :src="`https://adpassport.xdf.cn/A2apis/GetUserPhoto?AccountID=${user.employEmail.split('@')[0]}`" class="avatar-image"/>
     </div>  
     <div class="user-info">
         <div>{{ user.employName }}</div>

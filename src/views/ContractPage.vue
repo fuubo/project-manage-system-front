@@ -97,7 +97,7 @@ var showContract = (file: ContractFile)=>{
   <div class="container">
     <van-tabs v-model:active="active" color="#22A296" @change="changeTab">
       <van-tab title="近期已签署" name="current">
-        <van-collapse v-model="activeNames">
+        <van-collapse v-model="activeNames" v-if="currentContract">
           <van-collapse-item name="top" class="contract-item">
             <template #title>
               <div class="title">{{currentContract.businessTypeName}}</div>

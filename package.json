@@ -6,7 +6,10 @@
     "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
-    "build-only": "vite build",
+    "build-dev": "vite build -m dev",
+    "build-test": "vite build -m test",
+    "build-uat": "vite build -m uat",
+    "build-prod": "vite build -m production",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },

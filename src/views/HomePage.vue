@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { userInfo } from '@/api/base'
-import { onMounted, reactive } from 'vue-demi'
+import { onMounted, reactive } from 'vue'
 interface UserInfo {
     userName: string;
     avatar: string;
@@ -16,7 +16,7 @@ onMounted(async ()=> {
     // user = data;
 })
 var logout = () => {
-    // console.log('退出登录')
+    window.location.href = import.meta.env.VITE_APP_LOGOUT_URL
 }
 </script>
 
@@ -39,6 +39,7 @@ var logout = () => {
     padding: 32px;
     display: flex;
     flex-direction: row;
+    border-bottom: 1px solid #ddd;
   }
   .user-avatar {
     height: 160px;

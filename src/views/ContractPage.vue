@@ -1,96 +1,122 @@
 <script setup lang="ts">
-import { currentList, fileList, contractList } from '@/api/contract'
-import type { Contract, ContractFile } from '@/types/contract'
-import { useRouter } from 'vue-router'
-import { ref, reactive, onMounted } from "vue";
+import { currentList, fileList, contractList } from "@/api/contract";
+import type { Contract, ContractFile } from "@/types/contract";
+import { useRouter } from "vue-router";
+import { ref, reactive, onMounted, computed } from "vue";
 
-const router = useRouter()
-var active = ref('current')
+const router = useRouter();
+var active = ref("current");
 
 /**
  * 最近签署数据
  */
-var activeNames = ref<string[]>([])
+var activeNames = ref<string[]>([]);
 let currentContract = reactive<Contract>({
-  businessTypeName: '',
-  contractNo: '',
-  signTime: '',
-  files: []
+  businessTypeName: "",
+  contractNo: "",
+  signTime: "",
+  files: [],
 });
 /**
  * 全部合同数据
  */
-var pageNum = 1, pageSize = 20;
-var allContract = reactive<Contract[]>([])
-var activeNamesAll = ref<string[]>([])
+var pageNum = 1,
+  pageSize = 20;
+var total = 0;
+var loading = ref(false);
+var allContract = reactive<Contract[]>([]);
+var activeNamesAll = ref<string[]>([]);
+
+const finished = computed(() => total <= pageNum * pageSize);
 
 /**
  * 默认加载最近签署
  */
-onMounted(async ()=> {
+onMounted(async () => {
   await initCurrent();
-})
+});
 
 /**
  * 加载最近签署
  */
 var initCurrent = async () => {
-  let {data} = await currentList();
+  let { data } = await currentList();
   currentContract = data;
-  if(currentContract && currentContract.contractNo) {
-    const result = await fileList(currentContract.contractNo)
+  if (currentContract && currentContract.contractNo) {
+    const result = await fileList(currentContract.contractNo);
     currentContract.files = result.data;
   }
-  activeNames.value = ['top']
-}
+  activeNames.value = ["top"];
+};
 
 /**
  * 加载全部合同
  */
 var initAll = async () => {
-  let {data} = await contractList({
+  pageNum = 0;
+  loading.value = true;
+  let { data } = await contractList({
     pageNum,
-    pageSize
+    pageSize,
   });
-  allContract = data.list
+  loading.value = false;
+  allContract = allContract.concat(data.list);
+  total = data.totalCount;
   activeNamesAll.value = [];
-}
+};
+
+/**
+ * 加载更多
+ */
+var loadMore = async () => {
+  pageNum++;
+  loading.value = true;
+  let { data } = await contractList({
+    pageNum,
+    pageSize,
+  });
+  loading.value = false;
+  allContract.concat(data.list);
+  total = data.totalCount;
+};
 
 /**
  * 切换标签栏
  */
-var changeTab = (e:string) => {
-  if (e == 'current') {
+var changeTab = (e: string) => {
+  if (e == "current") {
     initCurrent();
-  } else if (e == 'all') {
+  } else if (e == "all") {
     initAll();
   }
-}
+};
 
 var loadContractFiles = async (contractNos: string[]) => {
   if (contractNos.length == 0) {
     return;
   }
-  for(var i = 0; i< contractNos.length; i++) {
+  for (var i = 0; i < contractNos.length; i++) {
     let contractNo = contractNos[i];
-    const {data} = await fileList(contractNo)
-    let selectContract = allContract.find(contract => contract.contractNo == contractNo);
-    if (selectContract){
+    const { data } = await fileList(contractNo);
+    let selectContract = allContract.find(
+      (contract) => contract.contractNo == contractNo
+    );
+    if (selectContract) {
       selectContract.files = data;
     }
   }
-  activeNamesAll.value = [...contractNos]
-}
+  activeNamesAll.value = [...contractNos];
+};
 
-var showContract = (file: ContractFile)=>{
+var showContract = (file: ContractFile) => {
   router.push({
-    path: '/contract/preview',
+    path: "/contract/preview",
     query: {
       docUrl: file.docUrl,
-      fileName: file.fileName
-    }
-  })
-}
+      fileName: file.fileName,
+    },
+  });
+};
 </script>
 
 <template>
@@ -116,24 +142,31 @@ var showContract = (file: ContractFile)=>{
       </van-tab>
       <van-tab title="全部合同" name="all">
         <van-collapse v-model="activeNamesAll" @change="loadContractFiles">
-          <van-collapse-item
-            v-for="(contract, index) in allContract"
-            :key="index"
-            :name="contract.contractNo"
-            class="contract-item">
-            <template #title>
-              <div class="title">{{contract.businessTypeName}}</div>
-              <div class="sub-title">签署时间：{{ contract.signTime.substring(0,10) }}</div>
-            </template>
-            <template v-if="contract.files && contract.files.length > 0">
-              <van-cell
-                v-for="(file, index) in contract.files"
-                :key="index"
-                :title="file.fileName"
-                is-link
-                @click="showContract(file)" />
-            </template>
-          </van-collapse-item>
+          <van-list
+            v-loading="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="loadMore"
+          >
+            <van-collapse-item
+              v-for="(contract, index) in allContract"
+              :key="index"
+              :name="contract.contractNo"
+              class="contract-item">
+              <template #title>
+                <div class="title">{{contract.businessTypeName}}</div>
+                <div class="sub-title">签署时间：{{ contract.signTime.substring(0,10) }}</div>
+              </template>
+              <template v-if="contract.files && contract.files.length > 0">
+                <van-cell
+                  v-for="(file, index) in contract.files"
+                  :key="index"
+                  :title="file.fileName"
+                  is-link
+                  @click="showContract(file)" />
+              </template>
+            </van-collapse-item>
+          </van-list>
         </van-collapse>
       </van-tab>
     </van-tabs>
@@ -146,25 +179,25 @@ var showContract = (file: ContractFile)=>{
   </div>
 </template>
 <style lang="scss" scoped>
-  .container {
-    height: 100vh;
-    background-color: #F2F2F2;
-  }
-  .contract-item {
-    margin-top: 16px;
-  }
-  :deep(.van-collapse-item__content) {
-    padding: 0;
-  }
-  .title {
-    font-size: 32px;
-    font-weight: bold;
-  }
-  .sub-title {
-    font-size: 11px;
-  }
-  .desc {
-    color: #AAAAAA;
-    padding: 16px;
-  }
+.container {
+  height: 100vh;
+  background-color: #f2f2f2;
+}
+.contract-item {
+  margin-top: 16px;
+}
+:deep(.van-collapse-item__content) {
+  padding: 0;
+}
+.title {
+  font-size: 32px;
+  font-weight: bold;
+}
+.sub-title {
+  font-size: 11px;
+}
+.desc {
+  color: #aaaaaa;
+  padding: 16px;
+}
 </style>

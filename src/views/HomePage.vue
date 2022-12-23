@@ -2,6 +2,7 @@
 import { userInfo } from "@/api/base";
 import type { User } from "@/types/base";
 import { onMounted, ref } from "vue";
+import { showConfirmDialog } from "vant";
 
 var user = ref<User>({
   employName: "",
@@ -10,10 +11,16 @@ var user = ref<User>({
 });
 onMounted(async () => {
   const { data } = await userInfo();
-  user.value = data
+  user.value = data;
 });
 var logout = () => {
-  window.location.href = import.meta.env.VITE_APP_LOGOUT_URL;
+  showConfirmDialog({
+    message: "您确定要退出登录吗？",
+  })
+    .then(() => {
+      window.location.href = import.meta.env.VITE_APP_LOGOUT_URL;
+    })
+    .catch(() => console.log);
 };
 </script>
 
@@ -30,6 +37,7 @@ var logout = () => {
         <van-button type="primary" class="logout-button" @click="logout">退出登录</van-button>
     </div>  
   </div>
+  <van-dialog></van-dialog>
 </template>
 <style lang="scss" scoped>
 .user {

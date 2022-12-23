@@ -5,7 +5,7 @@ const base = import.meta.env.VITE_APP_BASE_URL
 export function userInfo() {
   return request({
     baseURL: base,
-    url: '/hr-contract-web/employee/signed/latest',
-    method: 'post'
+    url: '/hr-base-web/employ/currentLoginInfo',
+    method: 'get'
   });
 }

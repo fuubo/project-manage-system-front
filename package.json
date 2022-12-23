@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host hrssc-local.test.xdf.cn --open",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-dev": "vite build -m dev",

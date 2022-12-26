@@ -17,5 +17,6 @@ import { RouterView } from "vue-router";
 <style scoped>
 .safe-bottom {
   margin-bottom: 50PX;
+  background-color: white;
 }
 </style>

@@ -180,7 +180,7 @@ var showContract = (file: ContractFile) => {
 </template>
 <style lang="scss" scoped>
 .container {
-  height: calc(100vh - 50PX);
+  height: calc(100vh - 100PX);
   background-color: #f2f2f2;
 }
 .contract-item {
@@ -194,7 +194,7 @@ var showContract = (file: ContractFile) => {
   font-weight: bold;
 }
 .sub-title {
-  font-size: 11px;
+  font-size: 18px;
 }
 .desc {
   color: #aaaaaa;

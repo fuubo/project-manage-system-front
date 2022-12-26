@@ -43,8 +43,7 @@ var logout = () => {
 </template>
 <style lang="scss" scoped>
 .container {
-  background: white;
-  height: stretch;
+  background-color: white;
 }
 .user {
   color: black;

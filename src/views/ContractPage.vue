@@ -121,7 +121,7 @@ var showContract = (file: ContractFile) => {
 
 <template>
   <div class="container">
-    <van-tabs v-model:active="active" color="#22A296" @change="changeTab">
+    <van-tabs v-model:active="active" color="#22A296" @change="changeTab" sticky>
       <van-tab title="近期已签署" name="current">
         <van-collapse v-model="activeNames" v-if="currentContract">
           <van-collapse-item name="top" class="contract-item">
@@ -179,10 +179,6 @@ var showContract = (file: ContractFile) => {
   </div>
 </template>
 <style lang="scss" scoped>
-.container {
-  min-height: stretch;
-  background-color: #f2f2f2;
-}
 .contract-item {
   margin-top: 16px;
 }

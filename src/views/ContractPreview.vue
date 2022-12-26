@@ -16,8 +16,6 @@ const goBack = () => {
 </template>
 <style lang="scss" scoped>
   .container {
-    height: stretch;
-    background-color: #F2F2F2;
     :deep(.van-nav-bar__arrow) {
         color: #22A296;
         font-weight: bold;

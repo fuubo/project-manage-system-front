@@ -20,14 +20,14 @@ let currentContract = reactive<Contract>({
 /**
  * 全部合同数据
  */
-var pageNum = 1,
-  pageSize = 20;
-var total = 0;
+var pageNum = ref(1),
+  pageSize = ref(20);
+var total = ref(0);
 var loading = ref(false);
 var allContract = reactive<Contract[]>([]);
 var activeNamesAll = ref<string[]>([]);
 
-const finished = computed(() => total <= pageNum * pageSize);
+const finished = computed(() => total.value <= pageNum.value * pageSize.value);
 
 /**
  * 默认加载最近签署
@@ -53,15 +53,15 @@ var initCurrent = async () => {
  * 加载全部合同
  */
 var initAll = async () => {
-  pageNum = 0;
+  pageNum.value = 1;
   loading.value = true;
   let { data } = await contractList({
-    pageNum,
-    pageSize,
+    pageNum: pageNum.value,
+    pageSize: pageSize.value,
   });
   loading.value = false;
   allContract = data.list;
-  total = data.totalCount;
+  total.value = data.totalCount;
   activeNamesAll.value = [];
 };
 
@@ -69,15 +69,15 @@ var initAll = async () => {
  * 加载更多
  */
 var loadMore = async () => {
-  pageNum++;
+  pageNum.value++;
   loading.value = true;
   let { data } = await contractList({
-    pageNum,
-    pageSize,
+    pageNum: pageNum.value,
+    pageSize: pageSize.value,
   });
   loading.value = false;
-  allContract.concat(data.list);
-  total = data.totalCount;
+  allContract = allContract.concat(data.list);
+  total.value = data.totalCount;
 };
 
 /**
@@ -143,6 +143,7 @@ var showContract = (file: ContractFile) => {
       <van-tab title="全部合同" name="all">
         <van-collapse v-model="activeNamesAll" @change="loadContractFiles">
           <van-list
+            immediate-check
             v-loading="loading"
             :finished="finished"
             finished-text="没有更多了"

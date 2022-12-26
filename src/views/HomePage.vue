@@ -44,7 +44,7 @@ var logout = () => {
 <style lang="scss" scoped>
 .container {
   background: white;
-  height: calc(100vh - 50PX);
+  height: stretch;
 }
 .user {
   padding: 32px;

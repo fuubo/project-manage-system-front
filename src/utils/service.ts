@@ -24,16 +24,20 @@ function createService() {
         showNotify({type: 'danger', message: '网络错误'})
         return Promise.reject(new Error('网络错误'))
       } else {
+        let url = window.location.href;
         switch (code) {
           case 1:
             // code === 1 代表没有错误
             return apiData
           case 420:
-            window.location.href = import.meta.env.VITE_APP_LOGIN_URL + encodeURIComponent(window.location.href)
+            if (import.meta.env.MODE === 'development') {
+              url = url.replace('http://hrssc-local.test.xdf.cn:5173', 'https://ehr-m-dev.test.xdf.cn')
+            }
+            window.location.href = import.meta.env.VITE_APP_LOGIN_URL + encodeURIComponent(url);
             return apiData
           default:
             // 不是正确的 code
-            showNotify({type: 'danger', message: apiData.msg || 'Error'})
+            showNotify({type: 'danger', message: apiData.message || 'Error'})
             return Promise.reject(new Error('Error'))
         }
       }

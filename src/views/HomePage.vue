@@ -47,6 +47,7 @@ var logout = () => {
   height: stretch;
 }
 .user {
+  color: black;
   padding: 32px;
   display: flex;
   flex-direction: row;

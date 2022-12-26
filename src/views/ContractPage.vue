@@ -60,7 +60,7 @@ var initAll = async () => {
     pageSize,
   });
   loading.value = false;
-  allContract = allContract.concat(data.list);
+  allContract = data.list;
   total = data.totalCount;
   activeNamesAll.value = [];
 };

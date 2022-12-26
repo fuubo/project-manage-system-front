@@ -29,7 +29,7 @@ function createService() {
             // code === 1 代表没有错误
             return apiData
           case 420:
-            window.location.href = apiData.message
+            window.location.href = import.meta.env.VITE_APP_LOGIN_URL + encodeURIComponent(window.location.href)
             return apiData
           default:
             // 不是正确的 code

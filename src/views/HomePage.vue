@@ -25,21 +25,27 @@ var logout = () => {
 </script>
 
 <template>
-  <div class="user">
-    <div class="user-avatar">
-        <img :src="`https://adpassport.xdf.cn/A2apis/GetUserPhoto?AccountID=${user.employEmail.split('@')[0]}`" class="avatar-image"/>
-    </div>  
-    <div class="user-info">
-        <div>{{ user.employName }}</div>
-        <div>{{ user.employId }}</div>
-    </div>  
-    <div class="logout-operator">
-        <van-button type="primary" class="logout-button" @click="logout">退出登录</van-button>
-    </div>  
+  <div class="container">
+    <div class="user">
+      <div class="user-avatar">
+          <img :src="`https://adpassport.xdf.cn/A2apis/GetUserPhoto?AccountID=${user.employEmail.split('@')[0]}`" class="avatar-image"/>
+      </div>  
+      <div class="user-info">
+          <div>{{ user.employName }}</div>
+          <div>{{ user.employId }}</div>
+      </div>  
+      <div class="logout-operator">
+          <van-button type="primary" class="logout-button" @click="logout">退出登录</van-button>
+      </div>  
+    </div>
+    <van-dialog></van-dialog>
   </div>
-  <van-dialog></van-dialog>
 </template>
 <style lang="scss" scoped>
+.container {
+  background: white;
+  height: calc(100vh - 50PX);
+}
 .user {
   padding: 32px;
   display: flex;

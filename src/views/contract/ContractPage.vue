@@ -2,7 +2,7 @@
 import { currentList, fileList, contractList } from "@/api/contract";
 import type { Contract, ContractFile } from "@/types/contract";
 import { useRouter } from "vue-router";
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed, watch } from "vue";
 
 const router = useRouter();
 var active = ref("current");
@@ -26,9 +26,15 @@ var total = ref(0);
 var loading = ref(false);
 var allContract = reactive<Contract[]>([]);
 var activeNamesAll = ref<string[]>([]);
+let refs: any[] = [];
 
 const finished = computed(() => total.value <= pageNum.value * pageSize.value);
 
+watch(activeNamesAll, (newValue: Array<string>, oldValue: Array<string>) => {
+  newValue
+    .filter((str) => !oldValue.includes(str))
+    .forEach((str) => loadContractFiles(str));
+});
 /**
  * 默认加载最近签署
  */
@@ -91,21 +97,16 @@ var changeTab = (e: string) => {
   }
 };
 
-var loadContractFiles = async (contractNos: string[]) => {
-  if (contractNos.length == 0) {
-    return;
+var loadContractFiles = async (contractNo: string) => {
+  const { data } = await fileList(contractNo);
+  let selectContractIndex = allContract.findIndex(
+    (contract) => contract.contractNo == contractNo
+  );
+  let selectContract = allContract[selectContractIndex];
+  if (selectContract) {
+    selectContract.files = [...data];
   }
-  for (var i = 0; i < contractNos.length; i++) {
-    let contractNo = contractNos[i];
-    const { data } = await fileList(contractNo);
-    let selectContract = allContract.find(
-      (contract) => contract.contractNo == contractNo
-    );
-    if (selectContract) {
-      selectContract.files = data;
-    }
-  }
-  activeNamesAll.value = [...contractNos];
+  refs[selectContractIndex].toggle(true);
 };
 
 var showContract = (file: ContractFile) => {
@@ -116,6 +117,15 @@ var showContract = (file: ContractFile) => {
       fileName: file.fileName,
     },
   });
+};
+var getCollapseRef = (el: any) => {
+  if (!el) {
+    return;
+  }
+  let selectContractIndex = allContract.findIndex(
+    (contract) => contract.contractNo == el.name
+  );
+  refs[selectContractIndex] = el;
 };
 </script>
 
@@ -141,10 +151,10 @@ var showContract = (file: ContractFile) => {
         </van-collapse>
       </van-tab>
       <van-tab title="全部合同" name="all">
-        <van-collapse v-model="activeNamesAll" @change="loadContractFiles">
+        <van-collapse v-model="activeNamesAll">
           <van-list
             immediate-check
-            v-loading="loading"
+            v-model:loading="loading"
             :finished="finished"
             finished-text="没有更多了"
             @load="loadMore"
@@ -152,6 +162,7 @@ var showContract = (file: ContractFile) => {
             <van-collapse-item
               v-for="(contract, index) in allContract"
               :key="index"
+              :ref="getCollapseRef"
               :name="contract.contractNo"
               class="contract-item">
               <template #title>

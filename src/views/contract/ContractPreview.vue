@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import VuePdfEmbed from 'vue-pdf-embed'
 const router = useRouter()
 const docUrl = String(router.currentRoute.value.query.docUrl)
 const fileName = String(router.currentRoute.value.query.fileName)
@@ -11,7 +12,8 @@ const goBack = () => {
 <template>
   <div class="container">
     <van-nav-bar @click-left="goBack" left-arrow :title="fileName" class="fix-top"/>
-    <iframe class="contract-content" :src="docUrl"></iframe>
+    <vue-pdf-embed :source="docUrl" />
+    <!-- <iframe class="contract-content" :src="docUrl"></iframe> -->
   </div>
 </template>
 <style lang="scss" scoped>

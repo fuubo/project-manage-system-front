@@ -31,7 +31,7 @@ const goBack = () => {
     height: 100vh;
     border: none;
     margin-top: 46PX;
-    :deep(.img) {
+    :deep(img) {
       width: 100%;
       overflow-y: scroll;
     }

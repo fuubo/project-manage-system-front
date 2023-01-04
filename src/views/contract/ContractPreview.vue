@@ -25,5 +25,9 @@ const goBack = () => {
     width: 100vw;
     height: 100vh;
     border: none;
+    .img {
+      width: 100%;
+      overflow-y: scroll;
+    }
   }
 </style>

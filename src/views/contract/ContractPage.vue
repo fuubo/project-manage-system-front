@@ -29,6 +29,7 @@ var activeNamesAll = ref<string[]>([]);
 let refs: any[] = [];
 
 const finished = computed(() => total.value <= pageNum.value * pageSize.value);
+const finishedText = computed(() => total.value === 0 ? '暂无合同' : '没有更多了');
 
 watch(activeNamesAll, (newValue: Array<string>, oldValue: Array<string>) => {
   newValue
@@ -149,6 +150,7 @@ var getCollapseRef = (el: any) => {
             </template>
           </van-collapse-item>
         </van-collapse>
+        <div class="empty-text" v-else>暂无合同</div>
       </van-tab>
       <van-tab title="全部合同" name="all">
         <van-collapse v-model="activeNamesAll">
@@ -156,7 +158,7 @@ var getCollapseRef = (el: any) => {
             immediate-check
             v-model:loading="loading"
             :finished="finished"
-            finished-text="没有更多了"
+            :finished-text="finishedText"
             @load="loadMore"
           >
             <van-collapse-item
@@ -196,6 +198,13 @@ var getCollapseRef = (el: any) => {
 }
 :deep(.van-collapse-item__content) {
   padding: 0;
+}
+.empty-text {
+  text-align: center;
+  width: 100%;
+  font-size: 14PX;
+  color: #969799;
+  line-height: 50PX;
 }
 .title {
   font-size: 32px;

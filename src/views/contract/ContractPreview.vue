@@ -10,11 +10,16 @@ const goBack = () => {
 
 <template>
   <div class="container">
-    <van-nav-bar @click-left="goBack" left-arrow :title="fileName" />
+    <van-nav-bar @click-left="goBack" left-arrow :title="fileName" class="fix-top"/>
     <iframe class="contract-content" :src="docUrl"></iframe>
   </div>
 </template>
 <style lang="scss" scoped>
+  .fix-top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
   .container {
     :deep(.van-nav-bar__arrow) {
         color: #22A296;
@@ -25,7 +30,8 @@ const goBack = () => {
     width: 100vw;
     height: 100vh;
     border: none;
-    .img {
+    margin-top: 46PX;
+    :deep(.img) {
       width: 100%;
       overflow-y: scroll;
     }

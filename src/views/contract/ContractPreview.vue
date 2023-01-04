@@ -12,8 +12,7 @@ const goBack = () => {
 <template>
   <div class="container">
     <van-nav-bar @click-left="goBack" left-arrow :title="fileName" class="fix-top"/>
-    <vue-pdf-embed :source="docUrl" />
-    <!-- <iframe class="contract-content" :src="docUrl"></iframe> -->
+    <vue-pdf-embed class="contract-content" :source="docUrl" />
   </div>
 </template>
 <style lang="scss" scoped>
@@ -29,13 +28,6 @@ const goBack = () => {
     }
   }
   .contract-content {
-    width: 100vw;
-    height: 100vh;
-    border: none;
     margin-top: 46PX;
-    :deep(img) {
-      width: 100%;
-      overflow-y: scroll;
-    }
   }
 </style>

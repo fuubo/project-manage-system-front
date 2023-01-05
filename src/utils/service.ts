@@ -54,6 +54,7 @@ function createService() {
           // TODO 跳转登录
           break
         default:
+          error.message = '网络错误'
           break
       }
       showNotify({type: 'danger', message: error.message})

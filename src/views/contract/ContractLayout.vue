@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import { RouterView } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
+const route = useRoute();
+console.log(route)
 </script>
 
 <template>
-  <RouterView class="safe-bottom" />
-  <van-tabbar route>
+  <router-view v-slot="{ Component }">
+    <keep-alive>
+      <component class="safe-bottom" :is="Component" />
+    </keep-alive>
+  </router-view>
+  <!-- <KeepAlive>
+    <RouterView class="safe-bottom" />
+  </KeepAlive> -->
+  <van-tabbar route v-if="route.path !== '/contract/preview'">
     <van-tabbar-item replace to="/contract/list" icon="description">合同</van-tabbar-item>
     <van-tabbar-item replace to="/contract/me" icon="contact">我的</van-tabbar-item>
   </van-tabbar>

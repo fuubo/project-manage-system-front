@@ -13,7 +13,8 @@ const router = createRouter({
       path: 'list',
       name: 'contractList',
       meta: {
-        title: '合同'
+        title: '合同',
+        keepAlive: true
       },
       component: () => import('../views/contract/ContractPage.vue')
     },

@@ -69,7 +69,7 @@ function createRequestFunction(service: AxiosInstance) {
   return function (config: AxiosRequestConfig) {
     const configDefault = {
       headers: {
-        'Content-Type': config.headers && config.headers['Content-Type'] || 'application/json'
+        'Content-Type': config.headers && config.headers.getContentType|| 'application/json'
       },
       timeout: 30000,
       baseURL: config.baseURL,

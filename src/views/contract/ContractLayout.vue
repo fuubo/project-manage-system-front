@@ -5,7 +5,7 @@ const route = useRoute();
 
 <template>
   <router-view v-slot="{ Component }">
-    <keep-alive>
+    <keep-alive include="ContractPage">
       <component class="safe-bottom" :is="Component" />
     </keep-alive>
   </router-view>

@@ -28,6 +28,6 @@ const goBack = () => {
   }
 }
 .contract-content {
-  margin-top: 46px;
+  margin-top: 46PX;
 }
 </style>

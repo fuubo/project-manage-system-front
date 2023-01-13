@@ -3,18 +3,24 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// @ts-ignore
-import pxtovw from 'postcss-px-to-viewport'
-
+import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import {VantResolver} from 'unplugin-vue-components/resolvers'
+import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
+    AutoImport({
+      dts: 'src/types/auto-imports.d.ts',
+      imports: ['vue', 'vue-router'],
+      resolvers: [ElementPlusResolver()],
+      eslintrc: {
+        enabled: true
+      },
+    }),
     Components({
-      resolvers: [VantResolver()]
+      resolvers: [ElementPlusResolver()]
     })
   ],
   resolve: {
@@ -22,14 +28,16 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  css: {
-    postcss: {
-      plugins: [pxtovw({
-          //这里是设计稿宽度 自己修改
-          viewportWidth: 750,
-          viewportUnit: 'vw',
-          exclude: /(\/|\\)(node_modules)(\/|\\)/
-        })]
+  server: {
+    proxy: {
+      '/api': {
+        target: '127.0.0.1:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
     }
+  },
+  css: {
+    postcss: {}
   }
 })

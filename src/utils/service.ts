@@ -1,11 +1,13 @@
 import axios from 'axios'
 import type { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { showNotify } from 'vant';
+import { ElMessage } from 'element-plus'
 
 /** 创建请求实例 */
 function createService() {
   // 创建一个 axios 实例
-  const service = axios.create()
+  const service = axios.create({
+    baseURL: '/api'
+  })
   // 请求拦截
   service.interceptors.request.use(
     (config) => config,
@@ -21,23 +23,16 @@ function createService() {
       const code = apiData.code
       // 如果没有 code, 代表这不是项目后端开发的 api
       if (code === undefined) {
-        showNotify({type: 'danger', message: '网络错误'})
+        ElMessage.error('网络错误')
         return Promise.reject(new Error('网络错误'))
       } else {
-        let url = window.location.href;
         switch (code) {
           case 1:
             // code === 1 代表没有错误
             return apiData
-          case 420:
-            if (import.meta.env.MODE === 'development') {
-              url = url.replace('http://hrssc-local.test.xdf.cn:5173', 'https://ehr-m-dev.test.xdf.cn')
-            }
-            window.location.href = import.meta.env.VITE_APP_LOGIN_URL + encodeURIComponent(url);
-            return apiData
           default:
             // 不是正确的 code
-            showNotify({type: 'danger', message: apiData.message || 'Error'})
+            ElMessage.error(apiData.message || 'Error')
             return Promise.reject(new Error('Error'))
         }
       }
@@ -57,7 +52,7 @@ function createService() {
           error.message = '网络错误'
           break
       }
-      showNotify({type: 'danger', message: error.message})
+      ElMessage.error(error.message)
       return Promise.reject(error)
     }
   )

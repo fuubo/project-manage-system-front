@@ -1,11 +1,11 @@
 import { request } from '@/utils/service';
 
 const base = import.meta.env.VITE_APP_BASE_URL
-/** 最近签署合同列表 */
+/** 用户信息 */
 export function userInfo() {
   return request({
     baseURL: base,
-    url: '/hr-base-web/employ/employE2TokenInfo',
+    url: '/user/info',
     method: 'get'
   });
 }

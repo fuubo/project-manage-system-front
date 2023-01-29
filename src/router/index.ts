@@ -7,12 +7,28 @@ const router = createRouter({
     component: import('../views/MenuLayout.vue'),
     children: [{
       path: '/feature/list',
-      name: 'contractList',
-        meta: {
-          title: '需求列表',
-          keepAlive: true
-        },
+      name: 'featureList',
+      meta: {
+        title: '需求列表',
+        keepAlive: true
+      },
       component: () => import('../views/feature/FeatureList.vue')
+    }, {
+      path: '/feature/chart',
+      name: 'featureChart',
+      meta: {
+        title: '需求总览',
+        keepAlive: true
+      },
+      component: () => import('../views/feature/FeatureChart.vue')
+    }, {
+      path: '/system',
+      name: 'system',
+      meta: {
+        title: '系统设置',
+        keepAlive: true
+      },
+      component: () => import('../views/base/SystemSetting.vue')
     }]
   }]
 })

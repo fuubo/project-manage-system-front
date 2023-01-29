@@ -9,7 +9,7 @@ interface RequestData {
 }
 
 /** 新增需求 */
-export function createFeature(data: Feature) {
+export function createFeature(data: any) {
   return request({
     baseURL: base,
     url: '/feature/createFeature',
@@ -30,18 +30,17 @@ export function getFeatureById(id: string) {
 export function deleteFeatureById(id: string) {
   return request({
     baseURL: base,
-    url: '/feature/deleteFeatureById',
-    method: 'get',
-    params: {id}
+    url: `/feature/deleteFeatureById/${id}`,
+    method: 'get'
   });
 }
 /**  更新需求 */
-export function updateFeatureById(feature: Feature) {
+export function updateFeatureById(data: Feature) {
   return request({
     baseURL: base,
     url: '/feature/updateFeatureById',
     method: 'post',
-    data: feature
+    data
   });
 }
 /** 全部需求列表 */

@@ -29,7 +29,7 @@ function createService() {
         switch (code) {
           case 1:
             // code === 1 代表没有错误
-            return apiData
+            return apiData.data
           default:
             // 不是正确的 code
             ElMessage.error(apiData.message || 'Error')

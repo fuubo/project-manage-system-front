@@ -15,14 +15,14 @@ defineProps<{ list: Menu[] }>()
   <template v-for="(menu, index) in list" :key="index">
     <el-sub-menu v-if="menu.children.length > 0" :index="menu.path">
       <template #title>
-        <svg-icon :name="menu.icon" class="menu-icon" />
+        <svg-icon v-if="menu.icon" :name="menu.icon" class="menu-icon" />
         {{ menu.title }}
       </template>
       <menu-item :list="menu.children"></menu-item>
     </el-sub-menu>
     <el-menu-item v-else :index="menu.path" >
       <template #title>
-        <svg-icon :name="menu.icon" class="menu-icon" />
+        <svg-icon v-if="menu.icon" :name="menu.icon" class="menu-icon" />
         {{menu.title}}
       </template>
     </el-menu-item>

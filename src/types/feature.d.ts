@@ -41,3 +41,43 @@ export interface FeatureCreateDto {
     testSubmitDate: string;
     status: string;
 }
+export interface FeatureTaskListDto {
+    _id: string;
+    featureId: string;
+    taskName: string;
+    description: string;
+    engineer: string;
+    project: string;
+    module: string;
+    startDate: string;
+    endDate: string;
+    status: string;
+    remark: string;
+    updatedAt: Date;
+    createdAt: Date;
+}
+export interface FeatureTaskUpdateDto {
+    _id: string;
+    featureId: string;
+    taskName: string;
+    description: string;
+    engineer: string;
+    project: string;
+    module: string;
+    startDate: string;
+    endDate: string;
+    status: string;
+    remark: string;
+}
+export interface FeatureTaskCreateDto {
+    featureId: string;
+    taskName: string;
+    description: string;
+    engineer: string;
+    project: string;
+    module: string;
+    startDate: string;
+    endDate: string;
+    status: string;
+    remark: string;
+}

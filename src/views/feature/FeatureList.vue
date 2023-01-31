@@ -12,6 +12,7 @@ import type {
 } from "@/types/feature";
 import { tableDateFormatter, dateFormatter } from "@/utils/date";
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
+const router = useRouter();
 var featureCreateForm = ref<FeatureCreateDto>({
   featureName: "",
   jiraUrl: "",
@@ -85,6 +86,9 @@ var state = reactive({
    */
   dialogTitle: "",
 });
+/**
+ * 表单校验规则
+ */
 const rules: FormRules = {
   featureName: [{required: true, message: '请输入需求名称'}],
   owner: [{required: true, message: '请输入负责人'}],
@@ -96,12 +100,22 @@ const rules: FormRules = {
 onMounted(() => {
   doSearch();
 });
+/**
+ * 打开新的标签页
+ * @param url 页面地址
+ */
 var open = (url: string) => {
   window.open(url, '_blank')
 }
+/**
+ * 单元格内容格式化
+ */
 var daysSuffix = (row: any, column: any) => {
-  return row[column.property] + "人天";
+  return row[column.property] ? row[column.property] + "人天" : "";
 };
+/**
+ * 列表查询
+ */
 var doSearch = async () => {
   let data: any = await featureList({
     pageNum: state.pageNum,
@@ -111,6 +125,9 @@ var doSearch = async () => {
   state.list = data.list;
   state.total = data.total;
 };
+/**
+ * 打开新增弹窗
+ */
 var add = () => {
   if (createForm.value) createForm.value.resetFields();
   featureCreateForm.value = {
@@ -128,6 +145,9 @@ var add = () => {
   };
   state.showAddDialog = true;
 };
+/**
+ * 删除数据二次确认
+ */
 var del = (row: FeatureListDto) => {
   ElMessageBox.confirm("确定删除？", "提示", {
     callback: async (action: string) => {
@@ -139,11 +159,17 @@ var del = (row: FeatureListDto) => {
     },
   });
 };
+/**
+ * 打开编辑弹窗
+ */
 var edit = (row: any) => {
   if (updateForm.value) updateForm.value.resetFields();
   featureUpdateForm.value = { ...row };
   state.showEditDialog = true;
 };
+/**
+ * 确认新增
+ */
 var confirmAdd = async () => {
   if (!createForm.value) return;
   createForm.value.validate(async (valid)=>{
@@ -154,8 +180,10 @@ var confirmAdd = async () => {
       state.showAddDialog = false;
     }
   })
-
 };
+/**
+ * 确认编辑
+ */
 var confirmEdit = async () => {
   if (!updateForm.value) return;
   updateForm.value.validate(async (valid)=>{
@@ -167,9 +195,23 @@ var confirmEdit = async () => {
     }
   })
 };
+/**
+ * 查看详情
+ */
 var detail = (row: FeatureListDto) => {
   state.featureDetail = { ...row };
   state.showDetailDialog = true;
+};
+/**
+ * 查看任务列表
+ */
+var taskList = (row: FeatureListDto) => {
+  router.push({
+    path: '/feature/taskList',
+    query: {
+      _id: row._id
+    }
+  })
 };
 </script>
 
@@ -199,7 +241,7 @@ var detail = (row: FeatureListDto) => {
             <el-button type="primary" @click="add">新增</el-button>
         </el-form-item>
     </el-form>
-    <el-table :data="state.list" border size="small" :header-cell-style="{background: '#F5F5F5', fontWeight: 'bold!important'}">
+    <el-table :data="state.list" border size="small" :header-cell-style="{background: '#F5F5F5'}">
         <el-table-column align="center" type="index" label="序号" width="60" fixed="left"></el-table-column>
         <el-table-column align="center" prop="featureName" label="需求名称" width="200" show-overflow-tooltip fixed="left"></el-table-column>
         <el-table-column align="center" prop="testSubmitDate" :formatter="tableDateFormatter" label="提测日期" width="140" show-overflow-tooltip fixed="left"></el-table-column>
@@ -212,6 +254,7 @@ var detail = (row: FeatureListDto) => {
         <el-table-column align="center" label="操作" min-width="160" fixed="right">
           <template #default="scope">
             <el-button type="primary" link @click="detail(scope.row)">查看详情</el-button>
+            <el-button type="primary" link @click="taskList(scope.row)">任务列表</el-button>
             <el-button type="primary" link @click="edit(scope.row)">编辑</el-button>
             <el-button type="danger" link @click="del(scope.row)">删除</el-button>
           </template>

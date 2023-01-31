@@ -14,6 +14,14 @@ const router = createRouter({
       },
       component: () => import('../views/feature/FeatureList.vue')
     }, {
+      path: '/feature/taskList',
+      name: 'featureTaskList',
+      meta: {
+        title: '任务列表',
+        keepAlive: true
+      },
+      component: () => import('../views/feature/FeatureTaskList.vue')
+    }, {
       path: '/feature/chart',
       name: 'featureChart',
       meta: {

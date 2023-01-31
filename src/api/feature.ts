@@ -1,4 +1,4 @@
-import type { Feature } from '@/types/feature';
+import type { FeatureTaskCreateDto, FeatureTaskUpdateDto, FeatureUpdateDto } from '@/types/feature';
 import { request } from '@/utils/service';
 
 const base = import.meta.env.VITE_APP_BASE_URL
@@ -17,6 +17,7 @@ export function createFeature(data: any) {
     data
   });
 }
+
 /** 需求详情 */
 export function getFeatureById(id: string) {
   return request({
@@ -26,6 +27,7 @@ export function getFeatureById(id: string) {
     params: {id}
   });
 }
+
 /** 删除需求 */
 export function deleteFeatureById(id: string) {
   return request({
@@ -34,8 +36,9 @@ export function deleteFeatureById(id: string) {
     method: 'get'
   });
 }
+
 /**  更新需求 */
-export function updateFeatureById(data: Feature) {
+export function updateFeatureById(data: FeatureUpdateDto) {
   return request({
     baseURL: base,
     url: '/feature/updateFeatureById',
@@ -43,6 +46,7 @@ export function updateFeatureById(data: Feature) {
     data
   });
 }
+
 /** 全部需求列表 */
 export function featureList(data: RequestData) {
   return request({
@@ -52,3 +56,34 @@ export function featureList(data: RequestData) {
     data
   });
 }
+
+/** 需求任务列表 */
+export function featureTaskList(id: string) {
+  return request({
+    baseURL: base,
+    url: '/featureTask/getFeatureTaskList',
+    method: 'get',
+    params: {id}
+  });
+}
+
+/** 新增需求任务 */
+export function createFeatureTask(data: FeatureTaskCreateDto) {
+  return request({
+    baseURL: base,
+    url: '/featureTask/createFeatureTask',
+    method: 'post',
+    data
+  });
+}
+
+/** 编辑需求任务 */
+export function updateFeatureTask(data: FeatureTaskUpdateDto) {
+  return request({
+    baseURL: base,
+    url: '/featureTask/updateFeatureTaskById',
+    method: 'post',
+    data
+  });
+}
+

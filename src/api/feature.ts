@@ -87,3 +87,12 @@ export function updateFeatureTask(data: FeatureTaskUpdateDto) {
   });
 }
 
+/** 编辑需求任务 */
+export function deleteFeatureTaskById(id: string) {
+  return request({
+    baseURL: base,
+    url: `/featureTask/deleteFeatureTaskById/${id}`,
+    method: 'get'
+  });
+}
+

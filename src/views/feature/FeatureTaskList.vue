@@ -5,8 +5,8 @@ import type {
   FeatureTaskUpdateDto,
 } from "@/types/feature";
 import { tableDateFormatter } from "@/utils/date";
-import { featureTaskList, createFeatureTask, updateFeatureTask } from "@/api/feature";
-import { ElMessage, type FormInstance, type FormRules } from "element-plus";
+import { featureTaskList, createFeatureTask, updateFeatureTask, deleteFeatureTaskById } from "@/api/feature";
+import { ElMessage, type FormInstance, type FormRules, ElMessageBox } from "element-plus";
 const route = useRoute();
 var createForm = ref<FormInstance>();
 const featureTaskCreateForm = ref<FeatureTaskCreateDto>({
@@ -90,6 +90,20 @@ var edit = (row: FeatureTaskListDto) => {
   featureTaskUpdateForm.value = { ...row };
   state.showEditDialog = true;
 };
+/**
+ * 删除数据二次确认
+ */
+var del = (row: FeatureTaskListDto) => {
+  ElMessageBox.confirm("确定删除？", "提示", {
+    callback: async (action: string) => {
+      if (action === "confirm") {
+        await deleteFeatureTaskById(row._id);
+        ElMessage.success("删除成功");
+        doSearch();
+      }
+    },
+  });
+};
 var confirmAdd = () => {
   if (!createForm.value) return;
   createForm.value.validate(async (valid)=>{
@@ -138,6 +152,7 @@ var confirmEdit = () => {
       <el-table-column align="center" label="操作" min-width="60" fixed="right">
         <template #default="scope">
           <el-button type="primary" link @click="edit(scope.row)">编辑</el-button>
+          <el-button type="danger" link @click="del(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

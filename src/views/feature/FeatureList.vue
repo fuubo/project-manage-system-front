@@ -231,8 +231,8 @@ var taskList = (row: FeatureListDto) => {
             <el-select filterable v-model="state.condition.status" clearable placeholder="请选择">
               <el-option label="待排期" value="待排期"></el-option>
               <el-option label="开发中" value="开发中"></el-option>
-              <el-option label="已提测" value="已提测"></el-option>
               <el-option label="测试中" value="测试中"></el-option>
+              <el-option label="验收中" value="验收中"></el-option>
               <el-option label="已上线" value="已上线"></el-option>
             </el-select>
         </el-form-item>
@@ -245,12 +245,20 @@ var taskList = (row: FeatureListDto) => {
         <el-table-column align="center" type="index" label="序号" width="60" fixed="left"></el-table-column>
         <el-table-column align="center" prop="featureName" label="需求名称" width="200" show-overflow-tooltip fixed="left"></el-table-column>
         <el-table-column align="center" prop="testSubmitDate" :formatter="tableDateFormatter" label="提测日期" width="140" show-overflow-tooltip fixed="left"></el-table-column>
-        <el-table-column align="center" prop="branchName" label="分支名称" width="200" show-overflow-tooltip></el-table-column>
+        <el-table-column align="center" prop="branchName" label="分支名称" width="230" show-overflow-tooltip></el-table-column>
         <el-table-column align="center" prop="owner" label="负责人" width="120" show-overflow-tooltip></el-table-column>
         <el-table-column align="center" prop="frontendDays" label="前端时长" :formatter="daysSuffix" width="120" show-overflow-tooltip></el-table-column>
         <el-table-column align="center" prop="backendDays" label="后端时长" :formatter="daysSuffix" width="120" show-overflow-tooltip></el-table-column>
         <el-table-column align="center" prop="testDays" label="测试时长" :formatter="daysSuffix" width="120" show-overflow-tooltip></el-table-column>
-        <el-table-column align="center" prop="status" label="状态" width="100" show-overflow-tooltip></el-table-column>
+        <el-table-column align="center" label="状态" width="100" show-overflow-tooltip>
+          <template #default="scope">
+            <div v-if="scope.row.status === '待排期'"><span class='led grey-led'></span>{{ scope.row.status }}</div>
+            <div v-else-if="scope.row.status === '开发中'"><span class='led blue-led'></span>{{ scope.row.status }}</div>
+            <div v-else-if="scope.row.status === '测试中'"><span class='led orange-led'></span>{{ scope.row.status }}</div>
+            <div v-else-if="scope.row.status === '验收中'"><span class='led purple-led'></span>{{ scope.row.status }}</div>
+            <div v-else-if="scope.row.status === '已上线'"><span class='led green-led'></span>{{ scope.row.status }}</div>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="操作" min-width="160" fixed="right">
           <template #default="scope">
             <el-button type="primary" link @click="detail(scope.row)">查看详情</el-button>
@@ -298,8 +306,8 @@ var taskList = (row: FeatureListDto) => {
           <el-select filterable v-model="featureCreateForm.status" clearable placeholder="请选择">
               <el-option label="待排期" value="待排期"></el-option>
               <el-option label="开发中" value="开发中"></el-option>
-              <el-option label="已提测" value="已提测"></el-option>
               <el-option label="测试中" value="测试中"></el-option>
+              <el-option label="验收中" value="验收中"></el-option>
               <el-option label="已上线" value="已上线"></el-option>
             </el-select>
         </el-form-item>
@@ -356,8 +364,8 @@ var taskList = (row: FeatureListDto) => {
           <el-select filterable v-model="featureUpdateForm.status" clearable placeholder="请选择">
               <el-option label="待排期" value="待排期"></el-option>
               <el-option label="开发中" value="开发中"></el-option>
-              <el-option label="已提测" value="已提测"></el-option>
               <el-option label="测试中" value="测试中"></el-option>
+              <el-option label="验收中" value="验收中"></el-option>
               <el-option label="已上线" value="已上线"></el-option>
             </el-select>
         </el-form-item>
@@ -408,5 +416,51 @@ var taskList = (row: FeatureListDto) => {
   :deep(.el-input__wrapper) {
     width: 270px;
   }
+}
+
+.led {
+  margin-right: 5px;
+  display: inline-block;
+  background-size: 2.5px 2.5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.grey-led {
+	background: grey;
+  background-image: radial-gradient(grey, transparent);
+  box-shadow: 0 0 10px grey inset, 0 0 5px grey;
+  animation: 13s grey infinite;
+}
+.orange-led {
+	background: orange;
+  background-image: radial-gradient(orange, transparent);
+  box-shadow: 0 0 10px orange inset, 0 0 5px orange;
+  animation: 13s orange infinite;
+}
+.purple-led {
+	background: #C640FF;
+  background-image: radial-gradient(#C640FF, transparent);
+  box-shadow: 0 0 10px #C640FF inset, 0 0 5px #C640FF;
+  animation: 13s #C640FF infinite;
+}
+.blue-led {
+	background: #409EFF;
+  background-image: radial-gradient(#409EFF, transparent);
+  box-shadow: 0 0 10px #409EFF inset, 0 0 5px #409EFF;
+  animation: 13s #409EFF infinite;
+}
+.green-led {
+	background: #22a296;
+  background-image: radial-gradient(lime, transparent);
+  box-shadow: 0 0 10px #22a296 inset, 0 0 5px lime;
+  animation: 13s #22a296 infinite;
+}
+.red-led {
+	background: red;
+  background-image: radial-gradient(brown, transparent);
+  box-shadow: 0 0 10px red inset, 0 0 5px red;
+  animation: 13s red infinite;
 }
 </style>

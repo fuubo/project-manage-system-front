@@ -45,6 +45,8 @@ const rules: FormRules = {
   engineer: [{ required: true, message: "请输入开发者" }],
   status: [{ required: true, message: "请选择任务状态" }],
 };
+const projects = ['ssc_web_frontstage', 'xdf-ssc-web', 'xdf-ssc-aio-main', 'xdf-ssc-aio']
+const modules = ['一管异动', '考勤', '电子签', '证明申请']
 /**
  * 默认加载最近签署
  */
@@ -139,7 +141,7 @@ var confirmEdit = () => {
         </template>
       </el-table-column>
       <el-table-column align="center" prop="engineer" label="开发者" width="90" fixed="left"></el-table-column>
-      <el-table-column align="center" prop="project" label="所属项目" width="120"></el-table-column>
+      <el-table-column align="center" prop="project" label="所属项目" width="150"></el-table-column>
       <el-table-column align="center" prop="module" label="所属模块" width="120"></el-table-column>
       <el-table-column align="center" prop="startDate" :formatter="tableDateFormatter" label="开始日期" width="100"></el-table-column>
       <el-table-column align="center" prop="endDate" :formatter="tableDateFormatter" label="结束日期" width="100"></el-table-column>
@@ -148,8 +150,12 @@ var confirmEdit = () => {
           <svg-icon className="margin-right" :name=iconNameByStatus(scope.row.status)></svg-icon>{{ scope.row.status }}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="remark" label="备注" min-width="200" show-overflow-tooltip></el-table-column>
-      <el-table-column align="center" label="操作" min-width="60" fixed="right">
+      <el-table-column align="left" prop="remark" label="备注" min-width="200">
+        <template #default="scope">
+          <span style="white-space: pre-line;">{{ scope.row.remark }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="操作" min-width="120" fixed="right">
         <template #default="scope">
           <el-button type="primary" link @click="edit(scope.row)">编辑</el-button>
           <el-button type="danger" link @click="del(scope.row)">删除</el-button>
@@ -189,10 +195,14 @@ var confirmEdit = () => {
           ></el-date-picker>
         </el-form-item>
         <el-form-item label="所属项目">
-          <el-input placeholder="请输入所属项目" v-model="featureTaskCreateForm.project" clearable></el-input>
+          <el-select allow-create v-model="featureTaskCreateForm.project" filterable clearable>
+            <el-option v-for="opt in projects" :key="opt" :value="opt"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="所属模块" prop="module">
-          <el-input placeholder="请输入所属模块" v-model="featureTaskCreateForm.module" clearable></el-input>
+          <el-select placeholder="请选择所属模块" allow-create v-model="featureTaskCreateForm.module" filterable clearable>
+            <el-option v-for="opt in modules" :key="opt" :value="opt"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="当前状态" prop="status">
           <el-select filterable v-model="featureTaskCreateForm.status" clearable placeholder="请选择当前状态">
@@ -203,7 +213,7 @@ var confirmEdit = () => {
         </el-form-item>
         <el-form-item label="备注">
           <el-input
-            v-model="featureTaskCreateForm.description"
+            v-model="featureTaskCreateForm.remark"
             :rows="8"
             type="textarea"
             placeholder="请输入备注"
@@ -248,10 +258,14 @@ var confirmEdit = () => {
           ></el-date-picker>
         </el-form-item>
         <el-form-item label="所属项目">
-          <el-input placeholder="请输入所属项目" v-model="featureTaskUpdateForm.project" clearable></el-input>
+          <el-select allow-create v-model="featureTaskUpdateForm.project" filterable clearable>
+            <el-option v-for="opt in projects" :key="opt" :value="opt"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="所属模块" prop="module">
-          <el-input placeholder="请输入所属模块" v-model="featureTaskUpdateForm.module" clearable></el-input>
+          <el-select placeholder="请选择所属模块" allow-create v-model="featureTaskUpdateForm.module" filterable clearable>
+            <el-option v-for="opt in modules" :key="opt" :value="opt"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="当前状态" prop="status">
           <el-select filterable v-model="featureTaskUpdateForm.status" clearable placeholder="请选择当前状态">

@@ -16,7 +16,13 @@ a,
     background-color: hsla(160, 100%, 37%, 0.2);
   }
 }
-
+/* 
+  颜色生成逻辑: weight=[1-9]
+    r = (r1 * (1 - weight) + 255 * weight * 0.1);
+    g = (g1 * (1 - weight) + 255 * weight * 0.1);
+    b = (b1 * (1 - weight) + 255 * weight * 0.1);
+    finalColor = rgb(r,g,b);
+*/
 :root {
   --el-color-primary: #22a296!important;
   --el-color-primary-light-1: #38aba1!important;
@@ -28,4 +34,5 @@ a,
   --el-color-primary-light-7: #bde3e0!important;
   --el-color-primary-light-8: #d3ecea!important;
   --el-color-primary-light-9: #e9f6f5!important;
+  --el-color-primary-dark-2: #1b8278!important;
 }

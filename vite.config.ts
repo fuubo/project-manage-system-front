@@ -46,6 +46,11 @@ export default defineConfig({
       }
     }
   },
+  // 生产环境配置
+  build: {
+    sourcemap: true,
+    minify: true
+  },
   css: {
     postcss: {}
   }

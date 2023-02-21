@@ -4,7 +4,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [{
     path: '/',
-    component: import('../views/MenuLayout.vue'),
+    component: () => import('../views/MenuLayout.vue'),
     children: [{
       path: '/feature/list',
       name: 'featureList',

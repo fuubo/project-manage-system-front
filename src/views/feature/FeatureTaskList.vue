@@ -70,6 +70,7 @@ var iconNameByStatus = (value: string) => {
        return 'done'
     default:
   }
+  return ''
 }
 var add = () => {
   if (createForm.value) createForm.value.resetFields();

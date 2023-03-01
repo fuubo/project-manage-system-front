@@ -10,6 +10,7 @@ export interface FeatureListDto {
     backendDays: string;
     testDays: string;
     testSubmitDate: string;
+    releaseDate: string;
     status: string;
     updatedAt: string;
     createdAt: string;
@@ -26,6 +27,7 @@ export interface FeatureUpdateDto {
     backendDays: string;
     testDays: string;
     testSubmitDate: string;
+    releaseDate: string;
     status: string;
 }
 export interface FeatureCreateDto {
@@ -39,6 +41,7 @@ export interface FeatureCreateDto {
     backendDays: string;
     testDays: string;
     testSubmitDate: string;
+    releaseDate: string;
     status: string;
 }
 export interface FeatureTaskListDto {

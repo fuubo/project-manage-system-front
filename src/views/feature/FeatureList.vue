@@ -24,6 +24,7 @@ var featureCreateForm = ref<FeatureCreateDto>({
   backendDays: "",
   testDays: "",
   testSubmitDate: "",
+  releaseDate: "",
   status: "",
 });
 var createForm = ref<FormInstance>();
@@ -39,6 +40,7 @@ var featureUpdateForm = ref<FeatureUpdateDto>({
   backendDays: "",
   testDays: "",
   testSubmitDate: "",
+  releaseDate: "",
   status: "",
 });
 var updateForm = ref<FormInstance>();
@@ -79,6 +81,7 @@ var state = reactive({
     backendDays: "",
     testDays: "",
     testSubmitDate: "",
+    releaseDate: "",
     status: "",
   },
   /**
@@ -141,6 +144,7 @@ var add = () => {
     backendDays: "",
     testDays: "",
     testSubmitDate: "",
+    releaseDate: "",
     status: "",
   };
   state.showAddDialog = true;
@@ -245,6 +249,7 @@ var taskList = (row: FeatureListDto) => {
         <el-table-column align="center" type="index" label="序号" width="60" fixed="left"></el-table-column>
         <el-table-column align="center" prop="featureName" label="需求名称" width="200" show-overflow-tooltip fixed="left"></el-table-column>
         <el-table-column align="center" prop="testSubmitDate" :formatter="tableDateFormatter" label="提测日期" width="140" show-overflow-tooltip fixed="left"></el-table-column>
+        <el-table-column align="center" prop="releaseDate" :formatter="tableDateFormatter" label="上线日期" width="140" show-overflow-tooltip fixed="left"></el-table-column>
         <el-table-column align="center" prop="branchName" label="分支名称" width="230" show-overflow-tooltip></el-table-column>
         <el-table-column align="center" prop="owner" label="负责人" width="120" show-overflow-tooltip></el-table-column>
         <el-table-column align="center" prop="frontendDays" label="前端时长" :formatter="daysSuffix" width="120" show-overflow-tooltip></el-table-column>
@@ -279,6 +284,14 @@ var taskList = (row: FeatureListDto) => {
             placeholder="请选择提测日期"
             value-format="YYYY-MM-DD"
             v-model="featureCreateForm.testSubmitDate"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label=" 上线日期">
+          <el-date-picker
+            clearable
+            placeholder="请选择上线日期"
+            value-format="YYYY-MM-DD"
+            v-model="featureCreateForm.releaseDate"
           ></el-date-picker>
         </el-form-item>
         <el-form-item label="分支名称">
@@ -339,6 +352,14 @@ var taskList = (row: FeatureListDto) => {
             v-model="featureUpdateForm.testSubmitDate"
           ></el-date-picker>
         </el-form-item>
+        <el-form-item label="上线日期">
+          <el-date-picker
+            clearable
+            placeholder="请选择上线日期"
+            value-format="YYYY-MM-DD"
+            v-model="featureUpdateForm.releaseDate"
+          ></el-date-picker>
+        </el-form-item>
         <el-form-item label="分支名称">
           <el-input placeholder="请输入分支名称" v-model="featureUpdateForm.branchName" clearable></el-input>
         </el-form-item>
@@ -388,6 +409,7 @@ var taskList = (row: FeatureListDto) => {
       <el-descriptions border>
         <el-descriptions-item label="需求名称">{{state.featureDetail.featureName}}</el-descriptions-item>
         <el-descriptions-item label="提测日期">{{dateFormatter(state.featureDetail.testSubmitDate)}}</el-descriptions-item>
+        <el-descriptions-item label="上线日期">{{dateFormatter(state.featureDetail.releaseDate)}}</el-descriptions-item>
         <el-descriptions-item label="分支名称">{{state.featureDetail.branchName}}</el-descriptions-item>
         <el-descriptions-item label="前端时长">{{state.featureDetail.frontendDays}}人天</el-descriptions-item>
         <el-descriptions-item label="后端时长">{{state.featureDetail.backendDays}}人天</el-descriptions-item>
